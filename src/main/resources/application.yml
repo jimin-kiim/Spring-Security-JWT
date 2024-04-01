@@ -1,4 +1,3 @@
-#spring.application.name=jwt
 server:
   port: 8080
   servlet:
@@ -13,7 +12,7 @@ spring:
     include: secrets
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:${port}/security?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:${port}/${db-name}?serverTimezone=Asia/Seoul
     username: ${db-username}
     password: ${db-password}
 
