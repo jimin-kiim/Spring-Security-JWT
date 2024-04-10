@@ -20,6 +20,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.addFilter(new MyFilter1());
+        http.addFilterBefore(new MyFilter1(), BasicAuthenticationFilter.class);
         http.csrf().disable(); // red line occurs but can be ignored
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
