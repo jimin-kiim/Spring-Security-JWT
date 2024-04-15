@@ -1,8 +1,8 @@
 package com.springsecurity.jwt.filter;
 
-//import javax.servlet.Filter;
-
 import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,8 +12,23 @@ public class MyFilter1 implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("Filter In");
-//        PrintWriter out = response.getWriter();
-        chain.doFilter(request, response);
+
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+
+        chain.doFilter(req, res);
+
+        if (req.getMethod().equals("POST")) {
+            System.out.println("POST requested");
+            String headerAuth = req.getHeader("Authorization");
+            System.out.println(headerAuth);
+
+            if (headerAuth.equals("cos")) {
+                chain.doFilter(req, res);
+            } else {
+                PrintWriter out = res.getWriter();
+                out.println("NO PERMISSION");
+            }
+        }
     }
 }
