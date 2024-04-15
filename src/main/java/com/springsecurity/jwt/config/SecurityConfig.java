@@ -1,6 +1,7 @@
 package com.springsecurity.jwt.config;
 
 import com.springsecurity.jwt.filter.MyFilter1;
+import com.springsecurity.jwt.filter.MyFilter3;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.addFilter(new MyFilter1());
-//        http.addFilterBefore(new MyFilter1(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new MyFilter3(), BasicAuthenticationFilter.class);
         http.csrf().disable(); // red line occurs but can be ignored
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
