@@ -16,7 +16,6 @@ public class MyFilter1 implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        req.setCharacterEncoding("UTF-8");
         if (req.getMethod().equals("POST")) {
             System.out.println("POST requested");
             String headerAuth = req.getHeader("Authorization");
