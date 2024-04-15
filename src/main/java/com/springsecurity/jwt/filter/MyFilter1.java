@@ -16,8 +16,6 @@ public class MyFilter1 implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        chain.doFilter(req, res);
-
         if (req.getMethod().equals("POST")) {
             System.out.println("POST requested");
             String headerAuth = req.getHeader("Authorization");
