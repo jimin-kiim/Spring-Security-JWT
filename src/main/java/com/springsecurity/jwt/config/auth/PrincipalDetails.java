@@ -1,12 +1,14 @@
 package com.springsecurity.jwt.config.auth;
 
 import com.springsecurity.jwt.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Data // activating getter setter function
 public class PrincipalDetails implements UserDetails {
 
     private User user;
