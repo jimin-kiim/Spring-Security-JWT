@@ -63,6 +63,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
         return null;
+    }
 
+    // after the authentication through attemptAuthentication is successfully performed
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        System.out.println("successfulAuthentication");
+        super.successfulAuthentication(request, response, chain, authResult);
     }
 }
