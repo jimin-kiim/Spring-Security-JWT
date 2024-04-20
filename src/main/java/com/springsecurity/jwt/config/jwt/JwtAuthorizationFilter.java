@@ -26,5 +26,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
         super.doFilterInternal(request, response, chain);
         System.out.println("address that needs authorization and authentication is requested");
+
+        String jwtHeader = request.getHeader("Authorization");
+        if (jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        String jwtToken = jwtHeader.replace("Bearer ", "");
     }
 }
