@@ -1,5 +1,9 @@
 package com.springsecurity.jwt.config.jwt;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.springsecurity.jwt.model.User;
+import com.springsecurity.jwt.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +21,11 @@ import java.io.IOException;
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final UserRepository userRepository;
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         super(authenticationManager);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -34,5 +41,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         String jwtToken = jwtHeader.replace("Bearer ", "");
+        String username =
+                JWT.require(Algorithm.HMAC512("rwa")).build().verify(jwtToken).getClaim("username").asString();
+
+        if (username != null) { // authenticated
+            User userEntity = userRepository.findByUsername(username);
+        }
     }
 }
