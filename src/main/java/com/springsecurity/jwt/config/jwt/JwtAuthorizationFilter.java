@@ -2,6 +2,7 @@ package com.springsecurity.jwt.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.springsecurity.jwt.config.auth.PrincipalDetails;
 import com.springsecurity.jwt.model.User;
 import com.springsecurity.jwt.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -9,6 +10,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
@@ -42,10 +46,31 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String jwtToken = jwtHeader.replace("Bearer ", "");
         String username =
-                JWT.require(Algorithm.HMAC512("rwa")).build().verify(jwtToken).getClaim("username").asString();
+                JWT.require(Algorithm.HMAC512("rwa")).build()
+                        .verify(jwtToken)
+                        .getClaim("username")
+                        .asString();
+        System.out.println("USERNAME: "+ username);
 
         if (username != null) { // authenticated
             User userEntity = userRepository.findByUsername(username);
+
+            PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
+
+            // creating authentication object without longin process(authenticate())
+            // by using the JWT token whose signature is found to be valid,
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            principalDetails,
+                            null,
+                            principalDetails.getAuthorities());
+
+            // storing authentication object in Spring Security session
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
+
+            chain.doFilter(request, response);
         }
+
     }
 }
