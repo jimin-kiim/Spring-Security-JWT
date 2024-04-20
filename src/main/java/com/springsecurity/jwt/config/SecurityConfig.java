@@ -24,6 +24,7 @@ public class SecurityConfig {
 
     private final CorsFilter corsFilter;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,7 +43,7 @@ public class SecurityConfig {
                 .formLogin().disable() // not using form tag, original login style
                 .httpBasic().disable();
         http.addFilter(new JwtAuthenticationFilter(authenticationManager));
-        http.addFilter(new JwtAuthorizationFilter(authenticationManager));
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/v1/user/**").hasAnyRole("USER", "ADMIN", "MANAGER")
                 .requestMatchers("/api/v1/manager/**").hasAnyRole("ADMIN", "MANAGER")
