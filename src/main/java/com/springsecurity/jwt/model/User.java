@@ -18,7 +18,7 @@ public class User {
     private long id;
     private String username;
     private String password;
-    private String roles; // USER, ADMIN
+    private String roles; // USER, MANAGER, ADMIN
 
     public List<String> getRoleList() {
         if (this.roles.length() > 0) {

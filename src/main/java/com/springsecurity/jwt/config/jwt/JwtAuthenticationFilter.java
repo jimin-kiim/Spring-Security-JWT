@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        System.out.println("JwtAuthenticationFilter");
         try {
 
             // ** x-www-form-urlencoded
@@ -43,24 +42,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // ** JSON
             ObjectMapper om = new ObjectMapper();
             User user = om.readValue(request.getInputStream(), User.class);
-            System.out.println(user);
 
             // creating Token
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-            System.out.println("TOKEN created");
 
             // authenticate with the created token
             // loadByUsername() in PricipalDetailsService is executed.
             // authentication: login info is contained
             Authentication authentication
                     = authenticationManager.authenticate(authenticationToken);
-            System.out.println("Authentication"+ authentication); // login succeeded
 
             // if principalDetails.getUser().getUsername() is printed, it means the info can be brought -> login success
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            System.out.println("Username:"+ principalDetails.getUser().getUsername());
-            System.out.println("Authentication : "+ principalDetails.getUser().getUsername());
+
             return authentication; // then stored in session
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult)
             throws IOException, ServletException {
-        System.out.println("successfulAuthentication");
+
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
         // RSA (X) Hash encryption method
