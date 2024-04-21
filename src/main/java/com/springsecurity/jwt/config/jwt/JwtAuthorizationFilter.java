@@ -38,15 +38,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         super.doFilterInternal(request, response, chain);
         System.out.println("address that needs authorization and authentication is requested");
 
-        String jwtHeader = request.getHeader("Authorization");
+        String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
         if (jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
             chain.doFilter(request, response);
             return;
         }
 
-        String jwtToken = jwtHeader.replace("Bearer ", "");
+        String jwtToken = jwtHeader.replace(JwtProperties.TOKEN_PREFIX, "");
         String username =
-                JWT.require(Algorithm.HMAC512("rwa")).build()
+                JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build()
                         .verify(jwtToken)
                         .getClaim("username")
                         .asString();
