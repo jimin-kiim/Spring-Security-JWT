@@ -55,6 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             // if principalDetails.getUser().getUsername() is printed, it means the info can be brought -> login success
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            System.out.println("AUTHENTICATION IN attemptAuthentication " + principalDetails.getUsername());
 
             return authentication; // then stored in session
         } catch (IOException e) {
