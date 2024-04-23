@@ -44,8 +44,8 @@ public class SecurityConfig {
         http.addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/v1/user/**").hasAnyRole("USER", "ADMIN", "MANAGER")
-                .requestMatchers("/api/v1/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                .requestMatchers("/api/v1/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                .requestMatchers("/api/v1/manager/**").hasAnyRole("MANAGER", "ADMIN")
                 .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll());
 
