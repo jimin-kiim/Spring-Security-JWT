@@ -1,8 +1,11 @@
 package com.springsecurity.jwt.controller;
 
+import com.springsecurity.jwt.config.auth.PrincipalDetails;
 import com.springsecurity.jwt.model.User;
 import com.springsecurity.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +40,9 @@ public class RestApiController {
 
     // user, manager, admin can access
     @GetMapping("/api/v1/user")
-    public String user() {
+    public String user(Authentication authentication) {
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("AUTHENTICATION" + principalDetails.getUsername());
         return "user";
     }
 
