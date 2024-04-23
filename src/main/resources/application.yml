@@ -1,1 +1,25 @@
-spring.application.name=jwt
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  profiles:
+    include: secrets
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:${port}/${db-name}?serverTimezone=Asia/Seoul
+    username: ${db-username}
+    password: ${db-password}
+
+  jpa:
+    hibernate:
+#      ddl-auto: update
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
